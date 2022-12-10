@@ -47,6 +47,8 @@ df = spark \
 
 # csv to kafka topic
 # /Users/hyunseokjung/kafka_2.12-3.3.1/bin/kafka-console-producer.sh --bootstrap-server 127.0.0.1:9092 --topic recommender-system1 < /Users/hyunseokjung/data/ml-latest-small/ratings.csv
+# csv consumer
+
 
 
 # this code setting
