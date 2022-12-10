@@ -21,5 +21,13 @@ if __name__ == "__main__":
     ssc.start()
     ssc.awaitTermination()
 
-# /Users/hyunseokjung/kafka_2.12-3.3.1/bin/kafka-server-start.sh -daemon /Users/hyunseokjung/kafka_2.12-3.3.1/config/server.properties
-# /Users/hyunseokjung/kafka_2.12-3.3.1/bin/kafka-topics.sh --describe --bootstrap-server 127.0.0.1:9092 --topic reco-train
+# Zookeeper Server 
+# /Users/hyunseokjung/kafka_2.12-3.3.1/bin/zookeeper-server-start.sh /Users/hyunseokjung/kafka_2.12-3.3.1/config/zookeeper.properties
+# Kafka Server 
+# /Users/hyunseokjung/kafka_2.12-3.3.1/bin/kafka-server-start.sh /Users/hyunseokjung/kafka_2.12-3.3.1/config/server.properties
+# Kafka Topic
+# /Users/hyunseokjung/kafka_2.12-3.3.1/bin/kafka-topics.sh --create --zookeeper localhost:2181 --topic video-stream-event --replication-factor 1 --partitions 3
+# Kafka Producer
+# /Users/hyunseokjung/kafka_2.12-3.3.1/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic video-stream-event
+# Kafka Consumer
+# /Users/hyunseokjung/kafka_2.12-3.3.1/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic video-stream-event --from-beginning
