@@ -1,5 +1,3 @@
-
-
 from __future__ import print_function
 
 if __name__ == '__main__':
@@ -114,3 +112,29 @@ if __name__ == '__main__':
         df_movie = pd.concat([df_movie, get_movie_metadata(movieId)])
     
     print(df_movie.head(7))
+
+# Movie-dataset Setting
+
+# Zookeeper Server 
+# /Users/hyunseokjung/kafka_2.12-3.3.1/bin/zookeeper-server-start.sh /Users/hyunseokjung/kafka_2.12-3.3.1/config/zookeeper.properties
+# Kafka Server 
+# /Users/hyunseokjung/kafka_2.12-3.3.1/bin/kafka-server-start.sh /Users/hyunseokjung/kafka_2.12-3.3.1/config/server.properties
+
+# kafka connect
+# /Users/hyunseokjung/confluent-7.3.0/bin/connect-distributed -daemon /Users/hyunseokjung/confluent-7.3.0/etc/kafka/connect-distributed.properties
+
+# Kafka Topic
+# /Users/hyunseokjung/kafka_2.12-3.3.1/bin/kafka-topics.sh --bootstrap-server 127.0.0.1:9092 --create --topic userid --partitions 1 --replication-factor 1
+# Kafka Producer
+# /Users/hyunseokjung/kafka_2.12-3.3.1/bin/kafka-console-producer.sh --bootstrap-server 127.0.0.1:9092 --topic userid
+# Kafka Producer - create file
+# > echo "plugin.path=/Users/hyunseokjung/kafka_2.12-3.3.1/libs/connect-file-3.3.1.jar"
+# > echo -e "50\n30\n200" > userId.txt
+# Kafka Consumer
+# /Users/hyunseokjung/kafka_2.12-3.3.1/bin/kafka-console-consumer.sh --bootstrap-server 127.0.0.1:9092 --topic userid
+
+
+# kafka topic list
+# /Users/hyunseokjung/kafka_2.12-3.3.1/bin/kafka-topics.sh --bootstrap-server 127.0.0.1:9092 --list
+# kafka topic delete
+# /Users/hyunseokjung/kafka_2.12-3.3.1/bin/kafka-topics.sh --delete --bootstrap-server 127.0.0.1:9092 --topic userid

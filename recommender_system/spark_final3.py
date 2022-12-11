@@ -9,6 +9,8 @@ if __name__ == '__main__':
     import pandas as pd
     from kafka import KafkaProducer
     from json import dumps
+    import mlflow
+    import mlflow.spark
     
     MAX_MEMORY = '8g'
 
@@ -36,6 +38,9 @@ if __name__ == '__main__':
     print(f'Movie Count : {metadata.count()}')
 
     train, test = ratings.randomSplit([.7, .3], seed=42)
+    mlflow.log_metric("training_nrows", train.count())
+    mlflow.log_metric("test_nrows", test.count())
+    print("Training: {}, test: {}".format(train.count(), test.count()))
 
     print('\nRecommender-Model-ALS\n\n')
 
@@ -57,6 +62,8 @@ if __name__ == '__main__':
 
     mae = evaluator.evaluate(predictions)
     print(f'MAE (Test) = {mae}\n\n')
+    mlflow.log_metric("test_mae", mae)
+    mlflow.spark.log_model(model, "model")
     
     user_id = int(input('INPUT USER_ID : '))
     
@@ -148,3 +155,6 @@ if __name__ == '__main__':
 # /Users/hyunseokjung/kafka_2.12-3.3.1/bin/kafka-topics.sh --bootstrap-server 127.0.0.1:9092 --list
 # kafka topic delete
 # /Users/hyunseokjung/kafka_2.12-3.3.1/bin/kafka-topics.sh --delete --bootstrap-server 127.0.0.1:9092 --topic userid
+
+# execute mlflow 
+# > mlflow ui
