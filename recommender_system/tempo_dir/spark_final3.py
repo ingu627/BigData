@@ -19,6 +19,17 @@ if __name__ == '__main__':
         .config('spark.driver.memory', MAX_MEMORY) \
         .config('spark.some.config.option', 'some-value') \
         .getOrCreate()
+    
+    user_id = int(input('INPUT USER_ID : '))
+    topic_name = input('TO => TOPIC NAME : ')
+    
+    producer = KafkaProducer(acks=0, 
+            compression_type='gzip', 
+            bootstrap_servers=['127.0.0.1:9092'], 
+            value_serializer=lambda x: dumps(x).encode('utf-8'))
+    
+    producer.send(topic_name, value=user_id)
+        # producer.flush()
 
     base_path = '/Users/hyunseokjung/data/movie_dataset/'
 
@@ -35,7 +46,7 @@ if __name__ == '__main__':
     metadata = metadata.select('imdb_id', 'title', 'vote_average', 'release_date').cache()
     print('Transform : movies\n')
     print(metadata.show(3))
-    print(f'Movie Count : {metadata.count()}')
+    print(f'Movie Count : {metadata.count()}\n')
 
     train, test = ratings.randomSplit([.7, .3], seed=42)
     mlflow.log_metric("training_nrows", train.count())
@@ -64,16 +75,6 @@ if __name__ == '__main__':
     print(f'MAE (Test) = {mae}\n\n')
     mlflow.log_metric("test_mae", mae)
     mlflow.spark.log_model(model, "model")
-    
-    user_id = int(input('INPUT USER_ID : '))
-    
-    producer = KafkaProducer(acks=0, 
-            compression_type='gzip', 
-            bootstrap_servers=['127.0.0.1:9092'], 
-            value_serializer=lambda x: dumps(x).encode('utf-8'))
-    
-    producer.send('userid', value=user_id)
-        # producer.flush()
         
     user_suggest = test.filter(test['userId'] == user_id).select(['movieId', 'userId'])
     user_offer = model.transform(user_suggest)
